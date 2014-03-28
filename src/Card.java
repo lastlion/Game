@@ -14,10 +14,16 @@ class Monster implements Card {
         if(hr.getPower() < level){
             int cha = (int)(Math.random()*10)%2;
             if(cha == 0)
-                hr.changeLevel(-1);
-            else
+                if(hr.getLevel() != 1)
+                    hr.changeLevel(-1);
+            else {
                 hr.changeLevel(1);
+                if(hr.getLevel()<10) {
+                    Card item = new Item();
+                    hr =  item.action(hr);
+                }
             }
+        }
 
         if(hr.getPower() >= level) {
             hr.changeLevel(1);
@@ -47,15 +53,33 @@ class Bane implements Card {
     int bane;
 
     Bane() {
+        bane = 0;
         bane = (int)(Math.random()*10)%5;
     }
 
     public Hero action(Hero hr) {
-        if(bane == 4)
-            if(hr.getLevel() != 1)
-                hr.changeLevel(-1);
-        else
-            hr.changeEquipment(bane, 0);
+        switch (bane) {
+            case 0:
+                hr.changeEquipment(0, 0);
+            break;
+
+            case 1:
+                hr.changeEquipment(1, 0);
+            break;
+
+            case 2:
+                hr.changeEquipment(2, 0);
+            break;
+
+            case 3:
+                hr.changeEquipment(3, 0);
+            break;
+
+            case 4:
+                if(hr.getLevel() != 1)
+                    hr.changeLevel(-1);
+            break;
+        }
 
         return hr;
     }
