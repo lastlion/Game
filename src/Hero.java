@@ -9,8 +9,6 @@ public class Hero {
         for(int i=0; i<4; i++)
             equipment[i] = 0;
         power = level;
-        for(int i=0; i<4; i++)
-            power += equipment[i];
     }
 
     public void changeLevel(int value) {
