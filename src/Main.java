@@ -27,14 +27,21 @@ public class Main {
                 case 0:
                     Card monster = new Monster();
                     System.out.println("Monster! Level: " + monster.action());
-                    System.out.println("Fight(1) or escape(2): ");
+                    System.out.println("Fight(1) or escape(0): ");
                     int ch1 = sc.nextInt();
                     switch (ch1) {
                         case 1:
                             if(hr.getPower() < monster.action())
                                 if(hr.getLevel() != 1) {
-                                    hr.changeLevel(-1);
-                                    System.out.println("Level down!");
+                                    int cha = (int)(Math.random()*10)%2;
+                                    if(cha == 0) {
+                                        System.out.println("Level down!");
+                                        hr.changeLevel(-1);
+                                    }
+                                    else {
+                                        System.out.println("Level up!");
+                                        hr.changeLevel(1);
+                                    }
                                 }
 
                             if(hr.getPower() >= monster.action()) {
@@ -79,7 +86,7 @@ public class Main {
 
                         break;
 
-                        case 2:
+                        case 0:
                             if(hr.getLevel() == 1)
                                 System.out.println("You're lucky!");
                             else
