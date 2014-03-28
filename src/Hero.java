@@ -8,8 +8,6 @@ public class Hero {
         equipment = new int[4];
         for(int i=0; i<4; i++)
             equipment[i] = 0;
-        Item first = new Item();
-        equipment[first.getType()] = first.action();
         power = level;
         for(int i=0; i<4; i++)
             power += equipment[i];

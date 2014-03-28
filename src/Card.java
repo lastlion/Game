@@ -1,5 +1,5 @@
 public interface Card {
-    int action();
+    Hero action(Hero hr);
 }
 
 class Monster implements Card {
@@ -10,35 +10,61 @@ class Monster implements Card {
         level = (int)(Math.random()*100)%10+1;
     }
 
-    public int action() {
-        return level;
+    public Hero action(Hero hr) {
+        if(hr.getPower() < level){
+            int cha = (int)(Math.random()*10)%2;
+            if(cha == 0)
+                hr.changeLevel(-1);
+            else
+                hr.changeLevel(1);
+            }
+
+        if(hr.getPower() >= level) {
+            hr.changeLevel(1);
+            int bonus = (int)(Math.random()*10)%2;
+            switch (bonus) {
+                case 0:
+                    if(hr.getLevel()<9) {
+                        Card prise = new Bonus();
+                        hr = prise.action(hr);
+                    }
+                break;
+
+                case 1:
+                    if(hr.getLevel()<10) {
+                        Card item = new Item();
+                        hr =  item.action(hr);
+                    }
+                break;
+            }
+        }
+
+        return hr;
     }
 }
 
 class Bane implements Card {
-    private int bane;
+    int bane;
 
     Bane() {
-        bane = 0;
-        bane = (int)(Math.random()*100)%3+1;
-        if(bane > 0)
-            bane *= (-1);
+        bane = (int)(Math.random()*10)%5;
     }
 
-    public int action() {
-        return bane;
+    public Hero action(Hero hr) {
+        if(bane == 4)
+            if(hr.getLevel() != 1)
+                hr.changeLevel(-1);
+        else
+            hr.changeEquipment(bane, 0);
+
+        return hr;
     }
 }
 
 class Bonus implements Card {
-    private int bonus;
-
-    Bonus() {
-        bonus = 1;
-    }
-
-    public int action() {
-        return bonus;
+    public Hero action(Hero hr) {
+        hr.changeLevel(1);
+        return hr;
     }
 }
 
@@ -49,14 +75,12 @@ class Item implements Card {
     Item() {
         type = 0;
         value = 0;
-        type = (int)(Math.random()*100)%4;
-        value = (int)(Math.random()*100)%3+1;
+        type = (int)(Math.random()*10)%4;
+        value = (int)(Math.random()*10)%3+1;
     }
-     public int action() {
-         return value;
+     public Hero action(Hero hr) {
+         if(hr.getEquipment(type)<value)
+            hr.changeEquipment(type, value);
+         return hr;
      }
-
-    public int getType() {
-        return type;
-    }
 }
